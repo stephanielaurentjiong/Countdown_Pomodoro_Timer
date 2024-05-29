@@ -3,6 +3,18 @@ const timeDisplay = document.querySelector('.time-display');
 const startBtn = document.querySelector('.start-btn');
 const shortBreakBtn = document.querySelector('.short-break-btn');
 const longBreakBtn = document.querySelector('.long-break-btn');
+const hamburger = document.querySelector('.hamburger');
+const navMenu = document.querySelector('.nav-menu');
+
+hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('active');
+    navMenu.classList.toggle('active');
+})
+
+document.querySelectorAll('.nav-link').forEach(a => a.addEventListener('click', () => {
+    hamburger.classList.remove('active');
+    navMenu.classList.remove('active');
+}))
 
 // Set default values
 let timeInSeconds = 1500; // 25 minutes in seconds
@@ -52,3 +64,4 @@ longBreakBtn.addEventListener('click', () => {
 
 // Initialize timer display
 displayTime();
+
