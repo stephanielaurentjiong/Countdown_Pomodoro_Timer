@@ -12,16 +12,27 @@ let currentQuoteIndex = -1;
 
 // Fetch the quote, then adds to quotesHistory. 
 let getQuote = () => {
-    fetch(url)
-    .then((data) => data.json())
+    fetch(url) // Add the fetch function call
+    .then((response) => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok ' + response.statusText);
+        }
+        return response.json();
+    })
     .then(item => {
         quotesHistory.push({
             content: item.content, 
             author: item.author
         });
-        // Updates the currentQuoteIndex to be the last item in the quotesHistory element. This will allow the "previous" button to navigate back through history. 
+        // Updates the currentQuoteIndex to be the last item in the quotesHistory array.
         currentQuoteIndex = quotesHistory.length - 1;
         displayQuote();
+    })
+    .catch((error) => {
+        console.error('Fetch error:', error);
+        // Optionally, display an error message to the user
+        quoteContainer.innerText = 'Failed to fetch quote. Please try again later.';
+        authorContainer.innerText = '';
     });
 };
 
@@ -32,8 +43,6 @@ let displayQuote = () => {
     authorContainer.innerText = quoteData.author;
 };
 
-nextBtn.addEventListener('click', getQuote);
-
 prevBtn.addEventListener('click', () => {
     if (currentQuoteIndex > 0) {
         currentQuoteIndex--;
@@ -42,3 +51,5 @@ prevBtn.addEventListener('click', () => {
 });
 
 getQuote();
+
+nextBtn.addEventListener('click', getQuote);
